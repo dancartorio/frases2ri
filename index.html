@@ -109,8 +109,7 @@
             // Adicione mais frases conforme necessário
             // ... (sua lista de frases aqui)
         ];
-
-        // Controla as frases já exibidas
+       // Controla as frases já exibidas
         let frasesExibidas = [];
 
         function exibirFraseAleatoria() {
@@ -172,15 +171,57 @@
             return luminosidade;
         }
 
+        // Função para calcular o intervalo até a próxima mudança de frase
+        function calcularIntervaloParaProximaMudanca() {
+            const agora = new Date();
+            const agoraUTC = new Date(agora.getUTCFullYear(), agora.getUTCMonth(), agora.getUTCDate(), agora.getUTCHours(), agora.getUTCMinutes(), agora.getUTCSeconds());
+            const agoraBrasilia = new Date(agoraUTC.getTime() - (3 * 60 * 60 * 1000)); // Ajuste para o fuso horário de Brasília (UTC-3)
+
+            let proximaMudanca = new Date(agoraBrasilia.getFullYear(), agoraBrasilia.getMonth(), agoraBrasilia.getDate(), 12, 0, 0); // 12:00
+            if (agoraBrasilia > proximaMudanca) {
+                proximaMudanca.setDate(proximaMudanca.getDate() + 1); // Se já passou da 12:00, define para o próximo dia
+            }
+
+            const intervalo = proximaMudanca - agoraBrasilia;
+            return intervalo;
+        }
+
+        // Verifica se já passou o tempo suficiente desde a última mudança
+        function podeMudarFrase() {
+            const ultimaMudanca = localStorage.getItem('ultimaMudanca');
+            if (!ultimaMudanca) {
+                return true; // Se não houver registro, permite a mudança
+            }
+
+            const agora = new Date();
+            const ultimaMudancaData = new Date(ultimaMudanca);
+            const diferenca = agora - ultimaMudancaData;
+
+            // Verifica se já passou 4 horas desde a última mudança
+            return diferenca >= 4 * 60 * 60 * 1000;
+        }
+
         // Exibir a primeira frase ao carregar a página
         exibirFraseAleatoria();
         mudarCorDeFundo(); // Adiciona a mudança inicial de cor de fundo
 
-        // Atualizar a frase e a cor de fundo a cada 60 minutos (3600000 milissegundos)
-        setInterval(() => {
-            exibirFraseAleatoria();
-            mudarCorDeFundo();
-        }, 18000000);
+        // Atualizar a frase e a cor de fundo a cada 4 horas, se permitido
+        const intervaloParaProximaMudanca = calcularIntervaloParaProximaMudanca();
+        setTimeout(() => {
+            if (podeMudarFrase()) {
+                exibirFraseAleatoria();
+                mudarCorDeFundo();
+                localStorage.setItem('ultimaMudanca', new Date().toISOString()); // Atualiza o registro da última mudança
+            }
+
+            setInterval(() => {
+                if (podeMudarFrase()) {
+                    exibirFraseAleatoria();
+                    mudarCorDeFundo();
+                    localStorage.setItem('ultimaMudanca', new Date().toISOString()); // Atualiza o registro da última mudança
+                }
+            }, 4 * 60 * 60 * 1000); // 4 horas em milissegundos
+        }, intervaloParaProximaMudanca);
     </script>
 </body>
 
