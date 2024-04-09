@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frases Motivacionais</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            font-size: 45;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            transition: background-color 0.5s ease; /* Adiciona uma transição suave para a mudança de cor */
+        }
+
+        h1 {
+            font-size: 45px;
+            animation: fadeIn 0.5s ease-in-out; /* Adiciona uma animação de fade-in */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="motivationalQuote">Frases Motivacionais Aqui</h1>
+
+    <script>
+        // Lista de frases motivacionais
+        const frasesMotivacionais = [
+
+            "Para ter sucesso, devemos eliminar dúvidas, aceitar desafios e rejeitar qualquer negatividade externa.",
+            "Uma palavra de encorajamento durante o fracasso vale mais do que uma hora de elogio após o sucesso.",
+            "Nós não somos produtos das nossas circunstâncias. Somos produtos das nossas decisões.",
+            "Nossa jornada é empolgante porque sabemos que, como equipe, somos capazes de alcançar o extraordinário.",
+            "O verdadeiro sucesso começa a acontecer quando saímos da nossa zona de conforto.",
+            "Todos são peças importantes no trabalho em equipe, cada um representa uma pequena parcela do resultado final, quando um falha, todos devem se unir, para sua reconstrução.",
+            "Quem não tem disposição dificulta o caminho, mas o verdadeiro guerreiro tem algo a mais, trabalha em equipe, por isso vai além.",
+            "mportante, mas sabe que não conseguirá nada sozinho.",
+            "Ninguém conseguirá trabalhar em equipe se não aprender a ouvir. Ninguém aprenderá a ouvir se não aprender a se colocar no lugar dos outros.",
+            "Tenha em mente que para cada problema existe um desafio e que para cada desafio existe uma solução. Somos todos um!",
+            "Essa equipe 2RI supera qualquer expectativa. Agradecemos muito por todo o trabalho realizado e por tudo o que vocês têm feito para que a nossa história seja um sucesso.",
+            "Obrigada equipe 2RI, pelo esforço, responsabilidade assumida e sacrifícios diários que nos fazem crescer juntos todos os dias.",
+            "Sem o trabalho de cada um de vocês, não estaríamos onde estamos hoje. Obrigada, equipe 2RI!",
+            "Quando todos avançam juntos, o sucesso ocorre por si só.",
+            "Uma pessoa pode ser um componente essencial, mas não é suficiente para ser uma equipe.",
+            "Palavras gentis podem ser curtas e fáceis de falar, mas seus ecos são verdadeiramente infinitos.",
+            "Não importa de onde você vem, o que importa é para onde vai.",
+            "Você não tem escolhas quando se trata de como perder, mas tem quando dá a volta por cima e se prepara para vencer novamente.",
+            "Trabalho em equipe é o segredo que faz pessoas comuns alcançarem resultados incomuns.",
+            "A nossa maior fraqueza consiste em desistir. O caminho mais seguro para o sucesso é sempre tentar mais uma vez.",
+            "O sucesso não deve ser medido pela posição que alguém alcançou na vida, mas pelos obstáculos que teve de superar.",
+            "É o fazer as coisas que torna você feliz. Você deve curtir o processo independente do sucesso ou do fracasso.",
+            "Você ou é incrível ou é invisível. A escolha é sua.",
+            "Sempre existe uma oportunidade para fazer a diferença.",
+            "As pessoas que têm metas são bem-sucedidas porque sabem para onde estão indo.",
+            "Não tenha medo das tempestades, pois elas lhe ensinarão a navegar.",
+            "Qualquer um pode desistir, pois é a coisa mais fácil do mundo. Mas a verdadeira fortaleza está em manter-se firme quando todos acham que você vai cair.",
+            "Você não precisa ser ótimo em alguma coisa para começar, mas precisa começar para ser ótimo em alguma coisa.",
+            "O elevador para o sucesso está danificado. Você precisará usar as escadas, um degrau por vez.",
+            
+            // Adicione mais frases conforme necessário
+            // ... (sua lista de frases aqui)
+        ];
+
+        // Controla as frases já exibidas
+        let frasesExibidas = [];
+
+        function exibirFraseAleatoria() {
+            const quoteElement = document.getElementById('motivationalQuote');
+
+            // Verifica se todas as frases foram exibidas
+            if (frasesExibidas.length === frasesMotivacionais.length) {
+                // Se sim, reinicia o ciclo
+                frasesExibidas = [];
+            }
+
+            // Encontra uma frase não exibida aleatoriamente
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * frasesMotivacionais.length);
+            } while (frasesExibidas.includes(randomIndex));
+
+            // Adiciona o índice à lista de frases exibidas
+            frasesExibidas.push(randomIndex);
+
+            // Adiciona uma classe para acionar a animação de fade-in
+            quoteElement.classList.add('fade-in');
+
+            // Aguarda um breve momento para permitir a animação
+            setTimeout(() => {
+                // Exibe a nova frase
+                quoteElement.textContent = frasesMotivacionais[randomIndex];
+
+                // Remove a classe para reiniciar a animação
+                quoteElement.classList.remove('fade-in');
+            }, 500); // Tempo correspondente à duração da animação em milissegundos
+        }
+
+        function gerarCorEscura() {
+            const randomColorComponent = () => Math.floor(Math.random() * 256);
+            return `rgb(${randomColorComponent()}, ${randomColorComponent()}, ${randomColorComponent()})`;
+        }
+
+        function mudarCorDeFundo() {
+            const bodyElement = document.body;
+            const darkColor = gerarCorEscura(); // Gera uma cor mais escura
+            bodyElement.style.backgroundColor = darkColor;
+
+            // Verifica a luminosidade da cor de fundo
+            const luminosidade = calcularLuminosidade(darkColor);
+
+            // Define a cor do texto com base na luminosidade
+            const textColor = luminosidade > 128 ? '#000000' : '#ffffff';
+            bodyElement.style.color = textColor;
+        }
+
+        function calcularLuminosidade(cor) {
+            // Obtém os componentes R, G, B da cor
+            const [, r, g, b] = cor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+
+            // Calcula a luminosidade usando a fórmula Y = 0.299*R + 0.587*G + 0.114*B
+            const luminosidade = 0.299 * r + 0.587 * g + 0.114 * b;
+
+            return luminosidade;
+        }
+
+        // Exibir a primeira frase ao carregar a página
+        exibirFraseAleatoria();
+        mudarCorDeFundo(); // Adiciona a mudança inicial de cor de fundo
+
+        // Atualizar a frase e a cor de fundo a cada 60 minutos (3600000 milissegundos)
+        setInterval(() => {
+            exibirFraseAleatoria();
+            mudarCorDeFundo();
+        }, 18000000);
+    </script>
+</body>
+
+</html>
