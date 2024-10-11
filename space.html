@@ -51,13 +51,41 @@
         font-size: 1.5em;
       }
     }
+
+    .logo {
+      display: block; /* Torna a imagem um elemento de bloco */
+      margin: 20px auto; /* Centraliza horizontalmente e adiciona margem na parte inferior */
+      width: 200px; /* Define um tamanho padrão para a logo */
+      animation: changeColor 5s infinite alternate, fadeInOut 5s infinite alternate; /* Aplica as animações de mudança de cor e de opacidade */
+    }
+
+    @keyframes changeColor {
+      0% {
+        filter: invert(100%) hue-rotate(0deg);
+      }
+      100% {
+        filter: invert(100%) hue-rotate(360deg);
+      }
+    }
+@keyframes fadeInOut {
+    0% {
+        opacity: 1; /* Totalmente opaca */
+    }
+    50% {
+        opacity: 0.5; /* Meio transparente */
+    }
+    100% {
+        opacity: 1; /* Retorna a ser totalmente opaca */
+    }
+}
   </style>
 </head>
 <body>
 
-<!-- Background and Motivational Quote -->
+<!-- Background and Logo -->
 <div id="large-header" class="large-header">
   <canvas id="demo-canvas"></canvas>
+  <img class="logo" src="https://raw.githubusercontent.com/dancartorio/frases2ri/refs/heads/main/2regi.png" alt="Logo da Empresa"> <!-- Logo da Empresa -->
   <h1 class="main-quote"></h1> <!-- Elemento onde a frase será exibida -->
 </div>
 
