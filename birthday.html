@@ -37,18 +37,51 @@
       overflow: hidden;
     }
 
-    .logo {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      width: 200px;
+.logo {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(45deg, 
+        #ff0099, #ff0066, #ff0033, #ff0000, 
+        #ff6600, #ff9900, #ffff00, 
+        #66ff00, #00ff99, #0099ff, 
+        #6600ff, #9900ff, #ff00ff, 
+        #ff3399, #ff6633, #ff9966, #ffcc00, 
+        #00ffff, #9966ff, #cc33ff, #ff6699);
+    background-size: 200% 200%;
+    animation: holographic 10s ease infinite;
+
+    /* Máscara para a imagem da logo */
+    mask-image: url('https://raw.githubusercontent.com/dancartorio/public/refs/heads/main/2riwhite.png'); /* Substitua pelo caminho correto */
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+
+    -webkit-mask-image: url('https://raw.githubusercontent.com/dancartorio/public/refs/heads/main/2riwhite.png'); /* Para navegadores baseados no WebKit */
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    -webkit-mask-position: center;
+}
+
+@keyframes holographic {
+    0% {
+        background-position: 0% 50%;
     }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
   </style>
 </head>
 <body>
-	<img src="https://raw.githubusercontent.com/dancartorio/public/refs/heads/main/2riwhite.png" alt="Logo" class="logo">
+	<img src="" alt="Logo" class="logo">
 	<canvas id="c"></canvas>
 	<p>2º Registro de Imóveis de <a href="#">Petrolina-PE</a><span>, by <a href="">Adm</a></span></p>
   </body>
