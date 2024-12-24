@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camisa da Sexta-feira</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #121212;
+      color: #ffffff;
+      padding: 20px;
+      margin: 0;
+    }
+    h1 {
+      color: #bb86fc;
+    }
+    #camisa {
+      font-size: 1.5em;
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #bb86fc;
+      border-radius: 5px;
+      background-color: #1f1f1f;
+      display: inline-block;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
+    .logo {
+      margin: 20px auto;
+      display: block;
+      width: 150px;
+      animation: gradientChange 5s infinite;
+    }
+    @keyframes gradientChange {
+      0% { filter: brightness(1) sepia(0) hue-rotate(0deg); }
+      25% { filter: brightness(1.2) sepia(0.3) hue-rotate(90deg); }
+      50% { filter: brightness(1.4) sepia(0.5) hue-rotate(180deg); }
+      75% { filter: brightness(1.2) sepia(0.3) hue-rotate(270deg); }
+      100% { filter: brightness(1) sepia(0) hue-rotate(360deg); }
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8em;
+      }
+      #camisa {
+        font-size: 1.2em;
+      }
+      .logo {
+        width: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="https://raw.githubusercontent.com/dancartorio/public/refs/heads/main/2riwhite.png" alt="Logo" class="logo">
+  <h1>Camisa da Sexta-feira</h1>
+  <p>Confira qual camisa deve ser usada na próxima sexta-feira:</p>
+  <div id="camisa">Carregando...</div>
+
+  <script>
+    // Lista de camisas para rotação
+    const camisas = [
+      'Camisa Polo🐎',
+      'Camisa Azul 15 km🎽',
+      'Quem não registra não é dono✒️'
+    ];
+
+    // Função para obter a próxima sexta-feira
+    function getProximaSexta() {
+      const hoje = new Date();
+      const proximaSexta = new Date(hoje);
+      proximaSexta.setDate(
+        hoje.getDate() + ((5 - hoje.getDay() + 7) % 7 || 7)
+      );
+      return proximaSexta;
+    }
+
+    // Determina a camisa com base na rotação
+    function determinarCamisa() {
+      const proximaSexta = getProximaSexta();
+      const inicioRotacao = new Date('2024-01-05'); // Data inicial da rotação
+      const diffDias = Math.floor((proximaSexta - inicioRotacao) / (1000 * 60 * 60 * 24));
+      const indexCamisa = Math.floor(diffDias / 7) % camisas.length;
+      return { data: proximaSexta.toISOString().split('T')[0], camisa: camisas[indexCamisa] };
+    }
+
+    // Exibir a camisa correspondente
+    function mostrarCamisa() {
+      const { data, camisa } = determinarCamisa();
+      const camisaDiv = document.getElementById('camisa');
+      camisaDiv.textContent = `Camisa para ${data}: ${camisa}`;
+    }
+
+    // Executar ao carregar a página
+    mostrarCamisa();
+  </script>
+</body>
+</html>
