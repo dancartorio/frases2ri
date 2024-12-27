@@ -71,13 +71,19 @@
       const hoje = new Date();
       const ultimaSexta = new Date(hoje);
 
-      if (hoje.getDay() === 6) { // Se hoje for sábado
-        ultimaSexta.setDate(hoje.getDate() - 1); // Volta para sexta anterior
-      } else {
-        ultimaSexta.setDate(hoje.getDate() - ((hoje.getDay() + 2) % 7));
-      }
-
+      // Calcula a última sexta-feira
+      ultimaSexta.setDate(hoje.getDate() - ((hoje.getDay() + 2) % 7));
       return ultimaSexta;
+    }
+
+    // Função para obter a próxima sexta-feira
+    function getProximaSexta() {
+      const hoje = new Date();
+      const proximaSexta = new Date(hoje);
+
+      // Calcula a próxima sexta-feira
+      proximaSexta.setDate(hoje.getDate() + ((5 - hoje.getDay() + 7) % 7 || 7));
+      return proximaSexta;
     }
 
     // Formatar a data no formato dd/mm/aaaa
@@ -86,13 +92,24 @@
       return `${dia}/${mes}/${ano}`;
     }
 
-    // Determina a camisa com base na rotação
+    // Determina a camisa correta
     function determinarCamisa() {
-      const ultimaSexta = getUltimaSexta();
+      const hoje = new Date();
+      const diaHoje = hoje.getDay();
+      let dataReferencia;
+
+      if (diaHoje === 5 || diaHoje === 6) {
+        // Sexta ou sábado: mostrar a camisa da última sexta-feira
+        dataReferencia = getUltimaSexta();
+      } else {
+        // Outros dias: mostrar a camisa da próxima sexta-feira
+        dataReferencia = getProximaSexta();
+      }
+
       const inicioRotacao = new Date('2024-01-05'); // Data inicial da rotação
-      const diffDias = Math.floor((ultimaSexta - inicioRotacao) / (1000 * 60 * 60 * 24));
+      const diffDias = Math.floor((dataReferencia - inicioRotacao) / (1000 * 60 * 60 * 24));
       const indexCamisa = Math.floor(diffDias / 7) % camisas.length;
-      return { data: formatarData(ultimaSexta.toISOString().split('T')[0]), camisa: camisas[indexCamisa] };
+      return { data: formatarData(dataReferencia.toISOString().split('T')[0]), camisa: camisas[indexCamisa] };
     }
 
     // Exibir a camisa correspondente
