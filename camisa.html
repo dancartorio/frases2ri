@@ -56,7 +56,6 @@
 <body>
   <img src="https://raw.githubusercontent.com/dancartorio/public/refs/heads/main/2riwhite.png" alt="Logo" class="logo">
   <h1>Camisa da Sexta-feira</h1>
-  <p></p>
   <div id="camisa">Carregando...</div>
 
   <script>
@@ -67,40 +66,44 @@
       'Quem não registra não é dono✒️'
     ];
 
-    // Função para obter a próxima sexta-feira
-    function getProximaSexta() {
+    // Função para obter a última sexta-feira
+    function getUltimaSexta() {
       const hoje = new Date();
-      const proximaSexta = new Date(hoje);
-      proximaSexta.setDate(
-        hoje.getDate() + ((5 - hoje.getDay() + 7) % 7 || 7)
-      );
-      return proximaSexta;
+      const ultimaSexta = new Date(hoje);
+
+      if (hoje.getDay() === 6) { // Se hoje for sábado
+        ultimaSexta.setDate(hoje.getDate() - 1); // Volta para sexta anterior
+      } else {
+        ultimaSexta.setDate(hoje.getDate() - ((hoje.getDay() + 2) % 7));
+      }
+
+      return ultimaSexta;
     }
 
     // Formatar a data no formato dd/mm/aaaa
-  function formatarData(dataISO) {
-    const [ano, mes, dia] = dataISO.split('-');
-    return `${dia}/${mes}/${ano}`;
-  }
+    function formatarData(dataISO) {
+      const [ano, mes, dia] = dataISO.split('-');
+      return `${dia}/${mes}/${ano}`;
+    }
 
-  // Determina a camisa com base na rotação
-  function determinarCamisa() {
-    const proximaSexta = getProximaSexta();
-    const inicioRotacao = new Date('2024-01-05'); // Data inicial da rotação
-    const diffDias = Math.floor((proximaSexta - inicioRotacao) / (1000 * 60 * 60 * 24));
-    const indexCamisa = Math.floor(diffDias / 7) % camisas.length;
-    return { data: formatarData(proximaSexta.toISOString().split('T')[0]), camisa: camisas[indexCamisa] };
-  }
+    // Determina a camisa com base na rotação
+    function determinarCamisa() {
+      const ultimaSexta = getUltimaSexta();
+      const inicioRotacao = new Date('2024-01-05'); // Data inicial da rotação
+      const diffDias = Math.floor((ultimaSexta - inicioRotacao) / (1000 * 60 * 60 * 24));
+      const indexCamisa = Math.floor(diffDias / 7) % camisas.length;
+      return { data: formatarData(ultimaSexta.toISOString().split('T')[0]), camisa: camisas[indexCamisa] };
+    }
 
-  // Exibir a camisa correspondente
-  function mostrarCamisa() {
-    const { data, camisa } = determinarCamisa();
-    const camisaDiv = document.getElementById('camisa');
-    camisaDiv.textContent = `${data} - ${camisa}`;
-  }
+    // Exibir a camisa correspondente
+    function mostrarCamisa() {
+      const { data, camisa } = determinarCamisa();
+      const camisaDiv = document.getElementById('camisa');
+      camisaDiv.textContent = `${data} - ${camisa}`;
+    }
 
-  // Executar ao carregar a página
-  mostrarCamisa();
+    // Executar ao carregar a página
+    mostrarCamisa();
   </script>
 </body>
 </html>
