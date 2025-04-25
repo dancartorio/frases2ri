@@ -6,58 +6,161 @@
   <title>Camisa da Sexta-feira</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       text-align: center;
-      background-color: #121212;
-      color: #ffffff;
-      padding: 20px;
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+      color: #fff;
+      min-height: 100vh;
       margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
     }
     h1 {
       color: #bb86fc;
+      margin-top: 30px;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #0008;
     }
     #camisa {
-      font-size: 1.5em;
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #bb86fc;
-      border-radius: 5px;
-      background-color: #1f1f1f;
+      font-size: 1.7em;
+      margin: 30px auto 10px auto;
+      padding: 18px 30px;
+      border-radius: 12px;
+      background: rgba(34, 34, 44, 0.95);
+      box-shadow: 0 4px 24px #0006;
+      border: 2px solid #bb86fc;
       display: inline-block;
-      max-width: 90%;
-      word-wrap: break-word;
+      max-width: 95vw;
+      word-break: break-word;
+      transition: background 0.3s;
     }
     .logo {
-      margin: 20px auto;
+      margin: 30px auto 10px auto;
       display: block;
-      width: 150px;
+      width: 160px;
+      filter: drop-shadow(0 4px 16px #bb86fc55);
       animation: gradientChange 5s infinite;
     }
     @keyframes gradientChange {
-      0% { filter: brightness(1) sepia(0) hue-rotate(0deg); }
-      25% { filter: brightness(1.2) sepia(0.3) hue-rotate(90deg); }
-      50% { filter: brightness(1.4) sepia(0.5) hue-rotate(180deg); }
-      75% { filter: brightness(1.2) sepia(0.3) hue-rotate(270deg); }
-      100% { filter: brightness(1) sepia(0) hue-rotate(360deg); }
+      0% { filter: brightness(1) sepia(0) hue-rotate(0deg) drop-shadow(0 4px 16px #bb86fc55);}
+      25% { filter: brightness(1.2) sepia(0.3) hue-rotate(90deg) drop-shadow(0 4px 16px #bb86fc99);}
+      50% { filter: brightness(1.4) sepia(0.5) hue-rotate(180deg) drop-shadow(0 4px 16px #bb86fc55);}
+      75% { filter: brightness(1.2) sepia(0.3) hue-rotate(270deg) drop-shadow(0 4px 16px #bb86fc99);}
+      100% { filter: brightness(1) sepia(0) hue-rotate(360deg) drop-shadow(0 4px 16px #bb86fc55);}
+    }
+    .btn-group {
+      margin: 24px auto 10px auto;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button {
+      background: linear-gradient(90deg, #bb86fc 0%, #7f53ac 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 22px;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0004;
+      transition: background 0.2s, transform 0.1s;
+      outline: none;
+    }
+    button:hover, button:focus {
+      background: linear-gradient(90deg, #7f53ac 0%, #bb86fc 100%);
+      transform: translateY(-2px) scale(1.04);
+    }
+    #historico {
+      margin: 30px auto 0 auto;
+      background: rgba(34, 34, 44, 0.85);
+      border-radius: 10px;
+      padding: 18px 10px 10px 10px;
+      box-shadow: 0 2px 12px #0003;
+      max-width: 400px;
+      font-size: 1.1em;
+    }
+    #historico ul {
+      margin: 10px 0 0 0;
+      padding: 0;
+    }
+    #historico li {
+      margin: 6px 0;
+      padding: 4px 0;
+      border-bottom: 1px solid #3335;
+      list-style: none;
+    }
+    #historico li:last-child {
+      border-bottom: none;
+    }
+    #boasvindas {
+      margin: 30px auto 0 auto;
+      font-size: 1.2em;
+      color: #bb86fc;
+      text-shadow: 0 2px 8px #0006;
+      max-width: 90vw;
     }
     @media (max-width: 600px) {
       h1 {
-        font-size: 1.8em;
+        font-size: 1.3em;
       }
       #camisa {
-        font-size: 1.2em;
+        font-size: 1.1em;
+        padding: 12px 8px;
       }
       .logo {
-        width: 120px;
+        width: 100px;
+      }
+      .btn-group {
+        flex-direction: column;
+        gap: 8px;
+      }
+      #historico {
+        font-size: 1em;
+        padding: 10px 4px 6px 4px;
       }
     }
+    /* Adicione ao seu <style> */
+body.light {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  color: #222;
+}
+body.light #camisa,
+body.light #historico {
+  background: rgba(255,255,255,0.95);
+  color: #222;
+  border-color: #7f53ac;
+}
+body.light h1, body.light #boasvindas {
+  color: #7f53ac;
+  text-shadow: none;
+}
+body.light button {
+  background: linear-gradient(90deg, #7f53ac 0%, #bb86fc 100%);
+  color: #fff;
+}
+body.light button:hover, body.light button:focus {
+  background: linear-gradient(90deg, #bb86fc 0%, #7f53ac 100%);
+}
   </style>
 </head>
 <body>
   <img src="https://raw.githubusercontent.com/dancartorio/public/refs/heads/main/2riwhite.png" alt="Logo" class="logo">
   <h1>Camisa da Sexta-feira</h1>
   <div id="camisa">Carregando...</div>
-
+  <div class="btn-group">
+    <button onclick="mudarSemana(-1)">⬅️ Semana anterior</button>
+    <button onclick="mudarSemana(1)">Semana seguinte ➡️</button>
+    <button onclick="copiarCamisa()">📋 Copiar</button>
+    <button onclick="enviarWhatsapp()">Enviar para o WhatsApp</button>
+  </div>
+  <div id="historico"></div>
+  <div id="boasvindas"></div>
+  <button id="toggleTheme" style="position:absolute;top:18px;right:18px;">🌙/☀️</button>
   <script>
     // Lista de camisas para rotação
     const camisas = [
@@ -92,35 +195,83 @@
       return `${dia}/${mes}/${ano}`;
     }
 
-    // Determina a camisa correta
-    function determinarCamisa() {
+    let semanaOffset = 0;
+
+    function determinarCamisa(offset = 0) {
       const hoje = new Date();
       const diaHoje = hoje.getDay();
       let dataReferencia;
 
       if (diaHoje === 5 || diaHoje === 6) {
-        // Sexta ou sábado: mostrar a camisa da última sexta-feira
         dataReferencia = getUltimaSexta();
       } else {
-        // Outros dias: mostrar a camisa da próxima sexta-feira
         dataReferencia = getProximaSexta();
       }
 
-      const inicioRotacao = new Date('2024-01-05'); // Data inicial da rotação
+      // Adiciona offset de semanas
+      dataReferencia.setDate(dataReferencia.getDate() + offset * 7);
+
+      const inicioRotacao = new Date('2024-01-05');
       const diffDias = Math.floor((dataReferencia - inicioRotacao) / (1000 * 60 * 60 * 24));
       const indexCamisa = Math.floor(diffDias / 7) % camisas.length;
-      return { data: formatarData(dataReferencia.toISOString().split('T')[0]), camisa: camisas[indexCamisa] };
+      return { data: formatarData(dataReferencia.toISOString().split('T')[0]), camisa: camisas[indexCamisa], dataObj: dataReferencia };
     }
 
     // Exibir a camisa correspondente
     function mostrarCamisa() {
-      const { data, camisa } = determinarCamisa();
+      const { data, camisa } = determinarCamisa(semanaOffset);
       const camisaDiv = document.getElementById('camisa');
       camisaDiv.textContent = `${data} - ${camisa}`;
+      mostrarHistorico();
+    }
+
+    function mudarSemana(delta) {
+      semanaOffset += delta;
+      mostrarCamisa();
+    }
+
+    function copiarCamisa() {
+      const camisaDiv = document.getElementById('camisa');
+      navigator.clipboard.writeText(camisaDiv.textContent);
+      camisaDiv.textContent += " (Copiado!)";
+      setTimeout(mostrarCamisa, 1000);
+    }
+
+    function mostrarHistorico() {
+      let html = "<b>Últimas 3 sextas:</b><ul style='list-style:none;padding:0;'>";
+      for (let i = -2; i <= 0; i++) {
+        const { data, camisa } = determinarCamisa(semanaOffset + i);
+        html += `<li>${data} - ${camisa}</li>`;
+      }
+      html += "</ul>";
+      document.getElementById('historico').innerHTML = html;
+    }
+
+    function animarBoasVindas(msg, i = 0) {
+      const el = document.getElementById('boasvindas');
+      if (i <= msg.length) {
+        el.textContent = msg.slice(0, i) + (i % 2 ? '|' : '');
+        setTimeout(() => animarBoasVindas(msg, i + 1), 60);
+      } else {
+        el.textContent = msg;
+      }
+    }
+
+    function enviarWhatsapp() {
+      const { data, camisa } = determinarCamisa(semanaOffset);
+      const texto = `Camisa da próxima sexta-feira (${data}): ${camisa}`;
+      const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+      window.open(url, '_blank');
     }
 
     // Executar ao carregar a página
+    animarBoasVindas("Bem-vindo(a)! Veja qual camisa usar na próxima sexta-feira 👕");
     mostrarCamisa();
+
+    document.getElementById('toggleTheme').onclick = function() {
+  document.body.classList.toggle('light');
+  this.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+};
   </script>
 </body>
 </html>
