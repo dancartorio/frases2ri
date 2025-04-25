@@ -68,7 +68,11 @@
         <h3></h3>
     </div>
     <div id="net"></div>
-
+    <div id="popup-camisa" style="display:none;position:fixed;bottom:32px;right:32px;z-index:9999;background:rgba(34,34,44,0.97);color:#fff;padding:22px 28px;border-radius:14px;box-shadow:0 4px 24px #0007;font-size:1.1em;max-width:320px;transition:opacity .3s;">
+      <span id="popup-camisa-close" style="position:absolute;top:8px;right:14px;cursor:pointer;font-size:1.2em;">×</span>
+      <b>Camisa da Sexta-feira:</b>
+      <div id="popup-camisa-info" style="margin-top:8px;"></div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.22/vanta.net.min.js"></script>
     <script>
@@ -153,56 +157,125 @@
             // ... (sua lista de frases aqui)
         ];
 
-        // Controla as frases já exibidas
-        let frasesExibidas = [];
-
-        function exibirFraseAleatoria() {
-            const quoteElement = document.querySelector('.content h3');
-
-            // Verifica se todas as frases foram exibidas
-            if (frasesExibidas.length === frasesMotivacionais.length) {
-                // Se sim, reinicia o ciclo
-                frasesExibidas = [];
-            }
-
-            // Encontra uma frase não exibida aleatoriamente
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * frasesMotivacionais.length);
-            } while (frasesExibidas.includes(randomIndex));
-
-            // Adiciona o índice à lista de frases exibidas
-            frasesExibidas.push(randomIndex);
-
-            // Exibe a nova frase
-            quoteElement.textContent = frasesMotivacionais[randomIndex];
-        }
-
-        // Exibir a primeira frase ao carregar a página
-        exibirFraseAleatoria();
-
-        // Atualizar a frase a cada 4 horas, levando em consideração o horário de Brasília
-        function calcularIntervaloParaProximaMudanca() {
+        // Função para obter o índice da frase do dia, mudando só às 6h da manhã (Brasília)
+        function getFraseDoDiaIndex() {
             const agora = new Date();
-            const agoraUTC = new Date(agora.getUTCFullYear(), agora.getUTCMonth(), agora.getUTCDate(), agora.getUTCHours(), agora.getUTCMinutes(), agora.getUTCSeconds());
-            const agoraBrasilia = new Date(agoraUTC.getTime() - (3 * 60 * 60 * 1000)); // Ajuste para o fuso horário de Brasília (UTC-3)
+            // Ajuste para horário de Brasília (UTC-3)
+            const agoraBrasilia = new Date(agora.getTime() - (3 * 60 * 60 * 1000));
+            const hoje = agoraBrasilia.toISOString().slice(0, 10); // yyyy-mm-dd
 
-            let proximaMudanca = new Date(agoraBrasilia.getFullYear(), agoraBrasilia.getMonth(), agoraBrasilia.getDate(), 12, 0, 0); // 12:00
-            if (agoraBrasilia > proximaMudanca) {
-                proximaMudanca.setDate(proximaMudanca.getDate() + 1); // Se já passou da 12:00, define para o próximo dia
+            let dados = localStorage.getItem('fraseMotivacionalDia');
+            let obj = dados ? JSON.parse(dados) : null;
+
+            // Se não existe ou é outro dia, ou já passou das 6h e ainda não mudou
+            if (!obj || obj.data !== hoje || agoraBrasilia.getHours() >= 6 && obj.horaAtualizada < 6) {
+                // Sorteia nova frase
+                const index = Math.floor(Math.random() * frasesMotivacionais.length);
+                obj = { data: hoje, index, horaAtualizada: agoraBrasilia.getHours() };
+                localStorage.setItem('fraseMotivacionalDia', JSON.stringify(obj));
             }
-
-            const intervalo = proximaMudanca - agoraBrasilia;
-            return intervalo;
+            return obj.index;
         }
 
-        function mudarFraseEIntervalo() {
-            exibirFraseAleatoria();
-            setInterval(exibirFraseAleatoria, 4 * 60 * 60 * 1000); // Atualiza a frase a cada 4 horas
+        function exibirFraseDoDia() {
+            const quoteElement = document.querySelector('.content h3');
+            const index = getFraseDoDiaIndex();
+            quoteElement.textContent = frasesMotivacionais[index];
         }
 
-        // Atualiza a frase e inicia o intervalo para a próxima mudança ao carregar a página
-        mudarFraseEIntervalo();
+        exibirFraseDoDia();
+
+        // Atualiza automaticamente às 6h da manhã (Brasília)
+        function agendarProximaMudanca() {
+            const agora = new Date();
+            const agoraBrasilia = new Date(agora.getTime() - (3 * 60 * 60 * 1000));
+            let proxima6h = new Date(agoraBrasilia);
+            proxima6h.setHours(6, 0, 0, 0);
+            if (agoraBrasilia.getHours() >= 6) {
+                proxima6h.setDate(proxima6h.getDate() + 1);
+            }
+            const msAte6h = proxima6h - agoraBrasilia;
+            setTimeout(() => {
+                localStorage.removeItem('fraseMotivacionalDia');
+                exibirFraseDoDia();
+                agendarProximaMudanca();
+            }, msAte6h);
+        }
+        agendarProximaMudanca();
+
+        // Função para determinar a camisa da próxima sexta-feira
+        function getCamisaSexta() {
+            const camisas = [
+                'Camisa Polo🐎',
+                'Camisa Rosa 30km🥇',
+                'Quem não registra não é dono✒️'
+            ];
+            // Calcula próxima sexta-feira
+            const hoje = new Date();
+            const proximaSexta = new Date(hoje);
+            proximaSexta.setDate(hoje.getDate() + ((5 - hoje.getDay() + 7) % 7 || 7));
+            // Rotação baseada em 2024-01-05
+            const inicioRotacao = new Date('2024-01-05');
+            const diffDias = Math.floor((proximaSexta - inicioRotacao) / (1000 * 60 * 60 * 24));
+            const indexCamisa = Math.floor(diffDias / 7) % camisas.length;
+            // Formata data
+            const data = proximaSexta.toLocaleDateString('pt-BR');
+            return { data, camisa: camisas[indexCamisa] };
+        }
+
+        // Exibe pop-up discreto às quintas-feiras
+        function mostrarPopupCamisa() {
+            const hoje = new Date();
+            // Horário de Brasília (UTC-3)
+            const agoraBrasilia = new Date(hoje.getTime() - (3 * 60 * 60 * 1000));
+            if (agoraBrasilia.getDay() === 4) { // 4 = quinta-feira
+                // Só mostra uma vez por quinta
+                const ultimaPopup = localStorage.getItem('popupCamisaData');
+                const hojeStr = agoraBrasilia.toISOString().slice(0,10);
+                if (ultimaPopup === hojeStr) return;
+                localStorage.setItem('popupCamisaData', hojeStr);
+
+                const info = getCamisaSexta();
+                document.getElementById('popup-camisa-info').textContent = `${info.data} - ${info.camisa}`;
+                document.getElementById('popup-camisa').style.display = 'block';
+            }
+        }
+
+        // Fechar popup
+        document.getElementById('popup-camisa-close').onclick = function() {
+            document.getElementById('popup-camisa').style.display = 'none';
+        };
+
+        // Executa ao carregar
+        mostrarPopupCamisa();
+
+        // Função para falar a camisa da sexta-feira
+function falarCamisaSexta() {
+    const info = getCamisaSexta();
+    const texto = `Atenção! A camisa da próxima sexta-feira, dia ${info.data}, será: ${info.camisa}`;
+    const utter = new SpeechSynthesisUtterance(texto);
+    utter.lang = 'pt-BR';
+    window.speechSynthesis.speak(utter);
+}
+
+// Checa se é quinta-feira, 17:20 (Brasília) e se já falou hoje
+function agendarFalaCamisa() {
+    const agora = new Date();
+    const agoraBrasilia = new Date(agora.getTime() - (3 * 60 * 60 * 1000));
+    if (agoraBrasilia.getDay() === 4 && agoraBrasilia.getHours() === 17 && agoraBrasilia.getMinutes() === 20) {
+        const ultimaFala = localStorage.getItem('camisaFalada');
+        const hojeStr = agoraBrasilia.toISOString().slice(0,10);
+        if (ultimaFala !== hojeStr) {
+            localStorage.setItem('camisaFalada', hojeStr);
+            falarCamisaSexta();
+        }
+    }
+    // Checa novamente a cada minuto
+    setTimeout(agendarFalaCamisa, 60000);
+}
+
+// Inicie o agendamento ao carregar a página
+agendarFalaCamisa();
     </script>
 </body>
 </html>
