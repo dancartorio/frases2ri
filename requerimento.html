@@ -191,38 +191,44 @@
                 padding: 0;
                 margin: 0;
                 max-width: 100%;
-            }
-            .footer, .instrucao {
-                page-break-before: auto !important;
-            }
-            .logo, h3 {
-                page-break-after: avoid;
-                page-break-inside: avoid;
-            }
-            fieldset, .form-group, .checkbox-group, #dadosRepresentante, #dadosPessoaFisica, #dadosPessoaJuridica {
-                page-break-inside: avoid;
-            }
-            .footer {
-                margin-top: 0 !important;
+                font-size: 12px !important;
             }
             fieldset {
-                margin-bottom: 5px;
-                padding: 5px;
+                margin-bottom: 2px !important;
+                padding: 4px 4px 2px 4px !important;
+                border-width: 1px !important;
+            }
+            .form-group, .checkbox-group {
+                gap: 2px !important;
+                flex-wrap: wrap;
             }
             .form-group label, .checkbox-group label {
-                font-size: 11px;
-                margin-bottom: 4px;
+                font-size: 12px !important;
+                margin-bottom: 2px !important;
+                width: 48% !important;
             }
             input[type="text"], input[type="email"], select {
-                font-size: 11px;
-                padding: 2px;
+                font-size: 12px !important;
+                padding: 1px 3px !important;
                 color: #000 !important;
                 background: #fff !important;
-                -webkit-text-fill-color: #000 !important; /* Para Chrome */
+                -webkit-text-fill-color: #000 !important;
+                width: 100% !important;
+                margin: 1px 0 !important;
             }
             h3, h4 {
-                font-size: 11px;
-                margin: 2px 0;
+                font-size: 12px !important;
+                margin: 2px 0 !important;
+            }
+            .logo img {
+                width: 100px !important;
+                margin-bottom: 2px !important;
+            }
+            .logo {
+                margin-bottom: 4px !important;
+            }
+            .footer, .instrucao {
+                font-size: 12px !important;
             }
         }
     </style>
@@ -266,7 +272,7 @@
                     <label>CPF/MF: <input type="text" name="cpf_pessoa_fisica"></label>
                     <label>ESTADO CIVIL:
                         <select name="estado_civil_pessoa_fisica">
-                            <option value="">Selecione</option>
+                            <option value=""></option>
                             <option value="solteiro">Solteiro(a)</option>
                             <option value="casado">Casado(a)</option>
                             <option value="separado">Separado(a) judicialmente</option>
@@ -277,7 +283,27 @@
                         </select>
                     </label>
                     <label>PROFISSÃO: <input type="text" name="profissao_pessoa_fisica"></label>
-                    <label>ENDEREÇO: <input type="text" name="endereco_pessoa_fisica"></label>
+                    <!-- Pessoa Física -->
+<label>
+    CEP:
+    <input type="text" name="cep_pessoa_fisica" id="cepPessoaFisica" maxlength="9" placeholder="">
+</label>
+<label>
+    RUA:
+    <input type="text" name="rua_pessoa_fisica" id="ruaPessoaFisica" placeholder="">
+</label>
+<label>
+    NÚMERO:
+    <input type="text" name="numero_pessoa_fisica" id="numeroPessoaFisica" placeholder="">
+</label>
+<label>
+    BAIRRO:
+    <input type="text" name="bairro_pessoa_fisica" id="bairroPessoaFisica" placeholder="">
+</label>
+<label>
+    CIDADE/UF:
+    <input type="text" name="cidade_uf_pessoa_fisica" id="cidadeUfPessoaFisica" placeholder="">
+</label>
                 </div>
             </div>
 
@@ -308,7 +334,7 @@
                     <label>CPF/MF: <input type="text" id="cpfRepresentante" name="cpf_representante"></label>
                     <label>ESTADO CIVIL:
                         <select name="estado_civil_representante">
-                            <option value="">Selecione</option>
+                            <option value=""></option>
                             <option value="solteiro">Solteiro(a)</option>
                             <option value="casado">Casado(a)</option>
                             <option value="separado">Separado(a) judicialmente</option>
@@ -319,7 +345,27 @@
                         </select>
                     </label>
                     <label>PROFISSÃO: <input type="text" name="profissao_representante"></label>
-                    <label>ENDEREÇO: <input type="text" name="endereco_representante"></label>
+                    <!-- Representante -->
+<label>
+    CEP:
+    <input type="text" name="cep_representante" id="cepRepresentante" maxlength="9" placeholder="">
+</label>
+<label>
+    RUA:
+    <input type="text" name="rua_representante" id="ruaRepresentante" placeholder="">
+</label>
+<label>
+    NÚMERO:
+    <input type="text" name="numero_representante" id="numeroRepresentante" placeholder="">
+</label>
+<label>
+    BAIRRO:
+    <input type="text" name="bairro_representante" id="bairroRepresentante" placeholder="">
+</label>
+<label>
+    CIDADE/UF:
+    <input type="text" name="cidade_uf_representante" id="cidadeUfRepresentante" placeholder="">
+</label>
                 </div>
             </div>
         </fieldset>
@@ -330,7 +376,7 @@
             <div style="display: flex; align-items: flex-end; gap: 10px;">
                 <div style="display: flex; flex-direction: column;">
                     <select id="tipoAverbacao" name="tipoAverbacao" style="width: 350px; border: none; background-color: #555; color: #fff;">
-                        <option value="">Selecione</option>
+                        <option value=""></option>
                         <option value="matricula">Matrícula desta 2ª Serventia</option>
                         <option value="imovel">Matrícula oriunda da 1ª Serventia</option>
                         <option value="proprietario">Proprietário</option>
@@ -591,6 +637,40 @@ if (cnpjInput) {
 document.getElementById('btnExportarPDF').addEventListener('click', function() {
     alert('Selecione "Salvar como PDF" na janela de impressão para exportar o documento.');
     window.print();
+});
+
+        // Pessoa Física - Busca CEP
+document.getElementById('cepPessoaFisica')?.addEventListener('blur', function() {
+    const cep = this.value.replace(/\D/g, '');
+    if (cep.length === 8) {
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.erro) {
+                    document.getElementById('ruaPessoaFisica').value = data.logradouro || '';
+                    document.getElementById('bairroPessoaFisica').value = data.bairro || '';
+                    document.getElementById('cidadeUfPessoaFisica').value = 
+                        (data.localidade || '') + (data.uf ? '/' + data.uf : '');
+                }
+            });
+    }
+});
+
+// Representante - Busca CEP
+document.getElementById('cepRepresentante')?.addEventListener('blur', function() {
+    const cep = this.value.replace(/\D/g, '');
+    if (cep.length === 8) {
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.erro) {
+                    document.getElementById('ruaRepresentante').value = data.logradouro || '';
+                    document.getElementById('bairroRepresentante').value = data.bairro || '';
+                    document.getElementById('cidadeUfRepresentante').value = 
+                        (data.localidade || '') + (data.uf ? '/' + data.uf : '');
+                }
+            });
+    }
 });
     </script>
 </body>
