@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requerimento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            color: #fff;
+            font-size: 14px;
+        }
+        form {
+            max-width: 800px;
+            margin: auto;
+            padding: 16px 18px 10px 18px;
+            background-color: #444;
+            border-radius: 8px;
+            box-shadow: 0 2px 16px #0002;
+        }
+        fieldset {
+            border: 1px solid #555;
+            margin-bottom: 14px;
+            padding: 12px 10px 10px 10px;
+            border-radius: 6px;
+            background: #393939;
+        }
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .form-group label {
+            display: flex;
+            flex: 1 1 48%;
+            flex-direction: column;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 6px 8px;
+            margin: 2px 0;
+            box-sizing: border-box;
+            font-size: 14px;
+            border: 1px solid #666;
+            border-radius: 3px;
+            background-color: #555 !important;
+            color: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, select:focus {
+            border-color: #00bfff;
+            box-shadow: 0 0 0 2px #00bfff44;
+            outline: none;
+            background: #4a4a4a !important;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .checkbox-group label {
+            width: 48%;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        input[type="checkbox"] {
+            accent-color: #00bfff;
+            margin-right: 5px;
+        }
+        h3, h4 {
+            text-align: center;
+            font-size: 13px;
+            margin: 7px 0 7px 0;
+            letter-spacing: 0.5px;
+        }
+        .hidden {
+            display: none;
+        }
+        .footer {
+            margin-top: 20px;
+        }
+        .carimbo, .instrucao {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        .instrucao h4 {
+            margin-top: 10px;
+        }
+        .instrucao ol {
+            padding-left: 15px;
+        }
+        .instrucao ol li {
+            margin-bottom: 10px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 14px;
+            page-break-inside: avoid;
+        }
+        .logo img {
+            width: 110px;
+            height: auto;
+            border-radius: 8px;
+        }
+        /* Botão PDF */
+        #btnExportarPDF {
+            padding: 7px 18px;
+            background: transparent;
+            color: #00bfff;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        #btnExportarPDF svg {
+            fill: #00bfff;
+            transition: fill 0.2s;
+        }
+        #btnExportarPDF:hover, #btnExportarPDF:focus {
+            background: #222;
+            color: #ffb300;
+        }
+        #btnExportarPDF:hover svg, #btnExportarPDF:focus svg {
+            fill: #ffb300;
+        }
+        /* Responsividade para mobile */
+        @media (max-width: 600px) {
+            body, form {
+                font-size: 13px;
+                padding: 0;
+                margin: 0;
+            }
+            form {
+                max-width: 100vw;
+                padding: 2px;
+            }
+            fieldset {
+                padding: 4px;
+                margin-bottom: 8px;
+            }
+            .form-group, .checkbox-group {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .form-group label, .checkbox-group label {
+                width: 100%;
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+            input[type="text"], input[type="email"], select {
+                width: 100%;
+                font-size: 13px;
+                padding: 4px;
+            }
+            .logo img {
+                width: 70px;
+            }
+            .footer, .instrucao {
+                font-size: 12px;
+            }
+            #tipoAverbacao, #numeroMatricula {
+                width: 100% !important;
+            }
+            .logo {
+                margin-bottom: 5px;
+            }
+        }
+        /* Esconde o botão PDF na impressão/PDF */
+        @media print {
+            #btnExportarPDF {
+                display: none !important;
+            }
+            body {
+                background: #fff !important;
+                color: #000 !important;
+            }
+            form {
+                page-break-after: always;
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+            }
+            .footer, .instrucao {
+                page-break-before: auto !important;
+            }
+            .logo, h3 {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+            fieldset, .form-group, .checkbox-group, #dadosRepresentante, #dadosPessoaFisica, #dadosPessoaJuridica {
+                page-break-inside: avoid;
+            }
+            .footer {
+                margin-top: 0 !important;
+            }
+            fieldset {
+                margin-bottom: 5px;
+                padding: 5px;
+            }
+            .form-group label, .checkbox-group label {
+                font-size: 11px;
+                margin-bottom: 4px;
+            }
+            input[type="text"], input[type="email"], select {
+                font-size: 11px;
+                padding: 2px;
+                color: #000 !important;
+                background: #fff !important;
+                -webkit-text-fill-color: #000 !important; /* Para Chrome */
+            }
+            h3, h4 {
+                font-size: 11px;
+                margin: 2px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão Exportar para PDF -->
+    <div style="text-align: right; margin: 10px 0;">
+        <button id="btnExportarPDF" type="button" style="padding: 7px 18px; background: transparent; color: #fff; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+            <!-- Ícone PDF SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" viewBox="0 0 24 24" style="margin-right: 5px;">
+                <path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5V9h5.5L13 3.5zM8 13h1.5v6H8v-6zm2.75 0h1.25l1.5 6h-1.1l-.25-1.25h-1.55L10.9 19h-1.1l1.5-6zm.6 3.5h1.3l-.65-3.25-.65 3.25zm3.15-3.5h2.25c.83 0 1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5h-2.25v-6zm1.5 1.5v3h.75a.75.75 0 0 0 .75-.75v-1.5a.75.75 0 0 0-.75-.75h-.75z"/>
+            </svg>
+            Exportar para PDF
+        </button>
+    </div>
+    <div class="logo">
+        <img src="https://raw.githubusercontent.com/dancartorio/intuity/main/logo.png" alt="Logotipo do Cartório">
+    </div>
+    <h3>ILMA. SRA. OFICIALA DO 2º REGISTRO DE IMÓVEIS DA COMARCA DE PETROLINA – PE</h3>
+    <form>
+        <!-- Seleção de Tipo de Pessoa -->
+        <fieldset>
+            <legend>Dados do Requerente</legend>
+            <label>Tipo de Requerente:</label>
+            <div style="display: flex; gap: 20px; margin-bottom: 10px;">
+                <label>
+                    <input type="checkbox" id="tipoPessoaFisica" name="tipoPessoa" value="pessoaFisica">
+                    Pessoa Física
+                </label>
+                <label>
+                    <input type="checkbox" id="tipoPessoaJuridica" name="tipoPessoa" value="pessoaJuridica">
+                    Pessoa Jurídica
+                </label>
+            </div>
+            <!-- Dados Pessoa Física -->
+            <div id="dadosPessoaFisica" class="hidden">
+                <h4></h4>
+                <div class="form-group">
+                    <label>NOME: <input type="text" name="nome_pessoa_fisica"></label>
+                    <label>RG: <input type="text" name="rg_pessoa_fisica"></label>
+                    <label>CPF/MF: <input type="text" name="cpf_pessoa_fisica"></label>
+                    <label>ESTADO CIVIL:
+                        <select name="estado_civil_pessoa_fisica">
+                            <option value="">Selecione</option>
+                            <option value="solteiro">Solteiro(a)</option>
+                            <option value="casado">Casado(a)</option>
+                            <option value="separado">Separado(a) judicialmente</option>
+                            <option value="divorciado">Divorciado(a)</option>
+                            <option value="viuvo">Viúvo(a)</option>
+                            <option value="uniao_estavel">União Estável</option>
+                            <option value="desquitado">Desquitado(a)</option>
+                        </select>
+                    </label>
+                    <label>PROFISSÃO: <input type="text" name="profissao_pessoa_fisica"></label>
+                    <label>ENDEREÇO: <input type="text" name="endereco_pessoa_fisica"></label>
+                </div>
+            </div>
+
+            <!-- Dados Pessoa Jurídica -->
+            <div id="dadosPessoaJuridica" class="hidden">
+                <h4></h4>
+                <div class="form-group">
+                    <label>NOME: <input type="text" name="nome_pessoa_juridica"></label>
+                    <label>CNPJ/MF: <input type="text" name="cnpj_pessoa_juridica"></label>
+                    <label>MUNICÍPIO/UF DA SEDE: <input type="text" name="municipio_uf_sede"></label>
+                </div>
+            </div>
+
+            <!-- Checkbox para representante -->
+            <div>
+                <label>
+                    <input type="checkbox" id="possuiRepresentante">
+                    Possui representante?
+                </label>
+            </div>
+
+            <!-- Dados do Representante -->
+            <div id="dadosRepresentante" class="hidden">
+                <h4></h4>
+                <div class="form-group">
+                    <label>NOME: <input type="text" name="nome_representante"></label>
+                    <label>RG: <input type="text" name="rg_representante"></label>
+                    <label>CPF/MF: <input type="text" id="cpfRepresentante" name="cpf_representante"></label>
+                    <label>ESTADO CIVIL:
+                        <select name="estado_civil_representante">
+                            <option value="">Selecione</option>
+                            <option value="solteiro">Solteiro(a)</option>
+                            <option value="casado">Casado(a)</option>
+                            <option value="separado">Separado(a) judicialmente</option>
+                            <option value="divorciado">Divorciado(a)</option>
+                            <option value="viuvo">Viúvo(a)</option>
+                            <option value="uniao_estavel">União Estável</option>
+                            <option value="desquitado">Desquitado(a)</option>
+                        </select>
+                    </label>
+                    <label>PROFISSÃO: <input type="text" name="profissao_representante"></label>
+                    <label>ENDEREÇO: <input type="text" name="endereco_representante"></label>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Seleção de Tipo de Averbação -->
+        <fieldset>
+            <legend>Averbações</legend>
+            <div style="display: flex; align-items: flex-end; gap: 10px;">
+                <div style="display: flex; flex-direction: column;">
+                    <select id="tipoAverbacao" name="tipoAverbacao" style="width: 350px; border: none; background-color: #555; color: #fff;">
+                        <option value="">Selecione</option>
+                        <option value="matricula">Matrícula desta 2ª Serventia</option>
+                        <option value="imovel">Matrícula oriunda da 1ª Serventia</option>
+                        <option value="proprietario">Proprietário</option>
+                    </select>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <label for="numeroMatricula" style="margin-bottom: 0; margin-right: 5px;">Nº Matrícula(s):</label>
+                    <input type="text" id="numeroMatricula" name="numeroMatricula" maxlength="100" style="width: 200px; margin-top: 0; border: none; background-color: #555; color: #fff;" placeholder="">
+                </div>
+            </div>
+
+            <!-- Opções específicas de Matrícula -->
+            <div id="averbacaoMatricula" class="checkbox-group hidden">
+                <label><input type="checkbox" name="averbacoes" value="todas"> Todas as averbações necessárias ao aperfeiçoamento da matrícula.</label>
+                <label><input type="checkbox" name="averbacoes" value="logradouro"> Logradouro</label>
+                <label><input type="checkbox" name="averbacoes" value="alteracao_inclusao_bairro"> Alteração/Inclusão do bairro</label>
+                <label><input type="checkbox" name="averbacoes" value="inscricao_municipal"> Inscrição Municipal/Cadastro Imobiliário</label>
+                <label><input type="checkbox" name="averbacoes" value="ccir_incra"> CCIR-INCRA</label>
+                <label><input type="checkbox" name="averbacoes" value="car"> CAR</label>
+                <label><input type="checkbox" name="averbacoes" value="descricao_fisica"> Descrição Física (Georeferenciamento)</label>
+                <label><input type="checkbox" name="averbacoes" value="limites_confrontacoes"> Limites e Confrontações</label>
+                <label><input type="checkbox" name="averbacoes" value="inclusao_area_terreno"> Inclusão da Área do Terreno</label>
+                <label><input type="checkbox" name="averbacoes" value="estado_civil"> Estado Civil</label>
+                <label><input type="checkbox" name="averbacoes" value="regime_bens"> Regime de Bens</label>
+                <label><input type="checkbox" name="averbacoes" value="pacto_antenupcial"> Pacto Antenupcial</label>
+                <label><input type="checkbox" name="averbacoes" value="inclusao_correcao_cpf"> Inclusão/Correção de CPF/MF</label>
+                <label><input type="checkbox" name="averbacoes" value="inclusao_correcao_documento"> Inclusão/Correção de Documento de Identificação</label>
+                <label><input type="checkbox" name="averbacoes" value="correcao_nome"> Correção de Nome</label>
+                <label><input type="checkbox" name="averbacoes" value="edificacao_construcao"> Edificação/construção</label>
+                <label><input type="checkbox" name="averbacoes" value="desmembramento"> Desmembramento em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unidades</label>
+                <label><input type="checkbox" name="averbacoes" value="remembramento"> Remembramento dos imóveis constantes das matrículas:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label><input type="checkbox" name="averbacoes" value="demolicao"> Reforma/Demolição, cuja descrição encontra-se na documentação acostada.</label>
+                <label><input type="checkbox" name="averbacoes" value="cancelamento"> Comunicação e Cancelamento do Ônus disposto no R-&nbsp;&nbsp;&nbsp;&nbsp;&nbspe/ou AV-</label>
+                <label><input type="checkbox" name="averbacoes" value="cancelamento_onus"> Cancelamento do Ônus disposto no R-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e/ou AV- </label>
+                <label><input type="checkbox" name="averbacoes" value="retificacao_area"> Retificação de Área</label>
+                <label><input type="checkbox" name="averbacoes" value="outras"> Outros (descrever): </label>
+            </div>
+
+            <!-- Opções específicas de Imóvel -->
+            <div id="averbacaoImovel" class="checkbox-group hidden">
+                <label><input type="checkbox" name="averbacoes" value="ccir"> CCIR-INCRA</label>
+                <label><input type="checkbox" name="averbacoes" value="car"> CAR</label>
+            </div>
+
+            <!-- Opções específicas de Proprietário -->
+            <div id="averbacaoProprietario" class="checkbox-group hidden">
+                <label><input type="checkbox" name="averbacoes" value="estado_civil"> Estado Civil</label>
+                <label><input type="checkbox" name="averbacoes" value="regime_bens"> Regime de Bens</label>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <strong>CERTIFICO</strong> que o presente documento foi assinado, pelo usuário, em minha presença, com base no que prevê o § 3º do art. 1.149 do Código de Normas de Pernambuco.<br><br>
+            <strong>Colaborador(a):________________________________________<br></strong>
+            <strong>Data:_____/_____/__________</strong>
+        </fieldset>
+    </form>
+
+    <!-- Parte das instruções e certificação no final da página -->
+    <div class="footer">
+        <br>
+        <div class="instrucao">
+            <h4>INSTRUÇÕES PARA PREENCHIMENTO:</h4>
+            <ol>
+                <li>Deverá ser providenciado o reconhecimento da firma de quem subscrever o requerimento;</li>
+                <br>
+                <li>Na hipótese do reconhecimento da firma não se efetivar na comarca de Petrolina, deverá ser providenciado o reconhecimento da firma do preposto do cartório (que subscreveu o reconhecimento) na comarca de Petrolina (“sinal público”);</li>
+                <br>
+                <li>Tratando-se de requerimento formalizado por pessoa jurídica, deverá ser apresentada prova de sua representação daquele que o subscrever, em forma de cópia autenticada (instrumentos de constituição de sociedade, alteração contratual, estatuto social, ata de assembleia);</li>
+                <br>
+                <li>Tratando-se de requerimento formalizado por procurador, deverá ser apresentado o instrumento de mandato, em forma de cópia autenticada (procuração – substabelecimento), com poderes especiais, nos termos do art. 661, §1º do Código Civil.</li>
+                <br>
+            </ol>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        // Substitui o controle do select por checkboxes
+document.getElementById('tipoPessoaFisica').addEventListener('change', function() {
+    const fisica = document.getElementById('dadosPessoaFisica');
+    const juridica = document.getElementById('dadosPessoaJuridica');
+    if (this.checked) {
+        fisica.classList.remove('hidden');
+        document.getElementById('tipoPessoaJuridica').checked = false;
+        juridica.classList.add('hidden');
+    } else {
+        fisica.classList.add('hidden');
+    }
+});
+document.getElementById('tipoPessoaJuridica').addEventListener('change', function() {
+    const fisica = document.getElementById('dadosPessoaFisica');
+    const juridica = document.getElementById('dadosPessoaJuridica');
+    if (this.checked) {
+        juridica.classList.remove('hidden');
+        document.getElementById('tipoPessoaFisica').checked = false;
+        fisica.classList.add('hidden');
+    } else {
+        juridica.classList.add('hidden');
+    }
+});
+        document.getElementById('tipoAverbacao').addEventListener('change', function() {
+            const tipoAverbacao = this.value;
+            const averbacaoMatricula = document.getElementById('averbacaoMatricula');
+            const averbacaoImovel = document.getElementById('averbacaoImovel');
+            const averbacaoProprietario = document.getElementById('averbacaoProprietario');
+            
+            averbacaoMatricula.classList.add('hidden');
+            averbacaoImovel.classList.add('hidden');
+            averbacaoProprietario.classList.add('hidden');
+            
+            if (tipoAverbacao === 'matricula') {
+                averbacaoMatricula.classList.remove('hidden');
+            } else if (tipoAverbacao === 'imovel') {
+                averbacaoImovel.classList.remove('hidden');
+            } else if (tipoAverbacao === 'proprietario') {
+                averbacaoProprietario.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('possuiRepresentante').addEventListener('change', function() {
+            const dadosRepresentante = document.getElementById('dadosRepresentante');
+            if (this.checked) {
+                dadosRepresentante.classList.remove('hidden');
+            } else {
+                dadosRepresentante.classList.add('hidden');
+            }
+        });
+
+        // Função para formatar CPF
+function formatarCPF(cpf) {
+    cpf = cpf.replace(/\D/g, "");
+    cpf = cpf.slice(0, 11);
+    if (cpf.length > 9) {
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
+    } else if (cpf.length > 6) {
+        return cpf.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+    } else if (cpf.length > 3) {
+        return cpf.replace(/(\d{3})(\d{1,3})/, "$1.$2");
+    }
+    return cpf;
+}
+
+// Função para validar CPF
+function validarCPF(cpf) {
+    cpf = cpf.replace(/\D/g, "");
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+    let soma = 0, resto;
+    for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
+    resto = (soma * 10) % 11;
+    if ((resto === 10) || (resto === 11)) resto = 0;
+    if (resto !== parseInt(cpf.substring(9, 10))) return false;
+    soma = 0;
+    for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i-1, i)) * (12 - i);
+    resto = (soma * 10) % 11;
+    if ((resto === 10) || (resto === 11)) resto = 0;
+    if (resto !== parseInt(cpf.substring(10, 11))) return false;
+    return true;
+}
+
+// Função para formatar CNPJ
+function formatarCNPJ(cnpj) {
+    cnpj = cnpj.replace(/\D/g, "");
+    cnpj = cnpj.slice(0, 14);
+    if (cnpj.length > 12) {
+        return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2}).*/, "$1.$2.$3/$4-$5");
+    } else if (cnpj.length > 8) {
+        return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{1,4}).*/, "$1.$2.$3/$4");
+    } else if (cnpj.length > 5) {
+        return cnpj.replace(/^(\d{2})(\d{3})(\d{1,3}).*/, "$1.$2.$3");
+    } else if (cnpj.length > 2) {
+        return cnpj.replace(/^(\d{2})(\d{1,3}).*/, "$1.$2");
+    }
+    return cnpj;
+}
+
+// Função para validar CNPJ
+function validarCNPJ(cnpj) {
+    cnpj = cnpj.replace(/\D/g, "");
+    if (cnpj.length !== 14) return false;
+    if (/^(\d)\1+$/.test(cnpj)) return false;
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    let digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
+    for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+    }
+    let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(0)) return false;
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(1)) return false;
+    return true;
+}
+
+// CPF Pessoa Física
+const cpfFisicaInput = document.querySelector('input[name="cpf_pessoa_fisica"]');
+if (cpfFisicaInput) {
+    cpfFisicaInput.addEventListener('input', function() {
+        this.value = formatarCPF(this.value);
+    });
+    cpfFisicaInput.addEventListener('blur', function() {
+        if (this.value && !validarCPF(this.value)) {
+            this.style.borderColor = 'red';
+            this.title = 'CPF inválido!';
+        } else {
+            this.style.borderColor = '';
+            this.title = '';
+        }
+    });
+}
+
+// CPF Representante
+const cpfRepresentanteInput = document.getElementById('cpfRepresentante');
+if (cpfRepresentanteInput) {
+    cpfRepresentanteInput.addEventListener('input', function() {
+        this.value = formatarCPF(this.value);
+    });
+    cpfRepresentanteInput.addEventListener('blur', function() {
+        if (this.value && !validarCPF(this.value)) {
+            this.style.borderColor = 'red';
+            this.title = 'CPF inválido!';
+        } else {
+            this.style.borderColor = '';
+            this.title = '';
+        }
+    });
+}
+
+// CNPJ Pessoa Jurídica
+const cnpjInput = document.querySelector('input[name="cnpj_pessoa_juridica"]');
+if (cnpjInput) {
+    cnpjInput.addEventListener('input', function() {
+        this.value = formatarCNPJ(this.value);
+    });
+    cnpjInput.addEventListener('blur', function() {
+        if (this.value && !validarCNPJ(this.value)) {
+            this.style.borderColor = 'red';
+            this.title = 'CNPJ inválido!';
+        } else {
+            this.style.borderColor = '';
+            this.title = '';
+        }
+    });
+}
+
+// Exportar para PDF
+document.getElementById('btnExportarPDF').addEventListener('click', function() {
+    alert('Selecione "Salvar como PDF" na janela de impressão para exportar o documento.');
+    window.print();
+});
+    </script>
+</body>
+</html>
